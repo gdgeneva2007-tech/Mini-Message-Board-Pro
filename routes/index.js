@@ -3,25 +3,19 @@ const db=require("../db/queries")
 const express=require("express")
 const router=express.Router();
 
-router.get("/",async (req,res)=>{
-    const searchTerm=req.query.search;
-    let usernames;
-    if(searchTerm){
-        usernames=await db.searchUsernames(searchTerm);
-    }
-    else{
-        usernames=await db.getAllUsernames();
-    }
+router.get("/",async (req ,res)=>{
+    let display=await db.getAllMessages();
+    res.render("index",{title:"All Messages",messages:display})
+})
 
-    console.log("Search term: ",searchTerm)
-    console.log("Results: ",usernames)
-
-    res.send(
-        `Search: ${searchTerm||'none'} | `+`Results: ${usernames.map((user)=>user.username).join(", ")||"no matches"}`
-    )
-    // const usernames=await db.getAllUsernames();
-    // console.log("Usernames: ",usernames)
-    // res.send("Usernames: "+usernames.map(user=>user.username).join(", "))
+router.get("/message/:id",async (req,res)=>{
+    const id=parseInt(req.params.id)
+    
+    let display=await db.searchMessage(id)
+    if(!display){
+        res.status(404).render("notFound",{title:"Message Not Found"})
+    }
+    res.render("messageDetail",{title:"Message Detail",message:display[0]})
 })
 
 module.exports=router;

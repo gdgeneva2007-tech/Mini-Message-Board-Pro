@@ -1,30 +1,22 @@
 const pool=require("./pool")
-async function getAllUsernames(){
-    const {rows}=await pool.query("SELECT * FROM usernames");
+async function getAllMessages(){
+    const {rows}=await pool.query("SELECT * FROM messages")
     return rows;
 }
 
-async function searchUsernames(searchTerm){
-    const {rows}=await pool.query(
-        //$1 is the placeholder - never put variables directly in SQL strings
-        //to prevent SQL injection attacks
-        "SELECT * FROM usernames WHERE username ILIKE $1",
-        [`%${searchTerm}%`] 
-    )
-    return rows
+async function searchMessage(id){
+    const {rows}=await pool.query("SELECT * FROM messages WHERE id=$1",[id])
+    return rows;
 }
 
-async function insertUsername(username){
-    await pool.query("INSERT INTO usernames (username) VALUES ($1)",[username]);
+async function insertMessage(msg){
+    await pool.query('INSERT INTO messages (text,"user",added) VALUES ($1,$2,NOW())',[msg.text,msg.user])
 }
 
-async function deleteAllUsernames(){
-    await pool.query("DELETE FROM usernames")
-}
+
 
 module.exports={
-    getAllUsernames,
-    insertUsername,
-    searchUsernames,
-    deleteAllUsernames
+    getAllMessages,
+    searchMessage,
+    insertMessage,
 }

@@ -1,0 +1,14 @@
+<%- include('./partials/header') %>
+<h1>Add New Message</h1>
+<form action="/new" method="POST">
+    <div>
+        <label for="user">User: </label>
+        <input type="text" id="user" name="user" requried placeholder="e.g. John Smith">
+    </div>
+    <div>
+        <label for="text">Text: </label>
+        <textarea name="text" id="text" rows="6" required placeholder="Write your message here!"></textarea>
+    </div>
+    <button type="submit">Submit</button>
+</form>
+<%- include('./partials/footer') %>
