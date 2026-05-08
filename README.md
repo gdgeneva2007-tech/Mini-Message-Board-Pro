@@ -29,3 +29,30 @@ added: 2023-10-27T10:00:00.000Z // This is a native JS Date object
 
 5. Run populatedb.js:
    node db/populatedb.js
+
+# Linux-oriented command workflow:
+
+1. Postgres running:
+
+sudo systemctl status postgresql
+
+If it's not active:
+
+sudo systemctl start postgresql
+sudo systemctl enable postgresql # optional: start on boot
+
+2. Create the database (once per project / machine)
+
+createdb message_board
+
+3. Point the app at the DB
+   create .env
+
+4. populatedb.js
+
+cd ~/repos/Mini-Message-Board-Pro
+node db/populatedb.js
+
+5. Run the app
+
+npm run dev
